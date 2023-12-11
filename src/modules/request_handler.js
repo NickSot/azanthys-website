@@ -13,6 +13,12 @@ const handleRequest = (request, response) => {
 			case '/static/logo.png':
 				endpoints.resource(response, './static/logo.png', 'image/png');
 				break;
+			case '/about':
+				endpoints.resource(response, './static/about.html', 'text/html');
+				break;
+			case '/shop':
+				endpoints.resource(response, './static/shop.html', 'text/html');
+				break;
 			default:
 				endpoints.notFound(response);
 		}

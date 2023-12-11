@@ -1,5 +1,5 @@
 body{
-	background-image: linear-gradient(#2D2424, grey);
+	background-image: linear-gradient(#2D2424, #9E8F8F);
 	height: 100%;
 	margin: 0;
 	background-repeat: no-repeat;
@@ -16,7 +16,7 @@ body{
 	justify-content: right;
 	text-align: center;
 	flex-direction: row;
-	background-color: lightgrey;
+	background-color: black;
 	position: fixed;
 	width: 100%;
 }
@@ -33,7 +33,7 @@ body{
 }
 
 #header #title {
-/*	padding-right: 35%;*/
+	padding-right: 35%;
 	text-align: center;
 	justify-content: center;
 	margin: 0;
@@ -53,8 +53,8 @@ body{
 
 #footer {
 	display: flex;
-	justify-content: center;
-	background-color: lightgrey;
+	justify-content: left;
+	background-color: #281E1E;
 	padding: 10px;
 	bottom: 0;
 	width: 100%;
@@ -79,4 +79,8 @@ body{
 
 #video-player {
 	border-radius: 3px;
+}
+
+a {
+	color: #53A8EA;
 }

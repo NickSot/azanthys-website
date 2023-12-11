@@ -4,8 +4,10 @@ youtube music video for singles x
 
 socials footer x
 
-create a repository
+create a repository x
 
-members' information page
+members' information page x
 
-merch store page
+merch store page x
+
+fill members' information page
