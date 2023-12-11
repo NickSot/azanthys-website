@@ -101,11 +101,12 @@ a {
 
 .member-photo:hover {
     animation-name: bounce;
-    animation-duration: 0.7s;
+    animation-duration: 5s;
     animation-fill-mode: forwards;
 }
 
 @keyframes bounce {
-  from  { height: 250px; width: 250px;}
-  to { height: 300px; width: 300px;}
+  0%  { height: 250px; width: 250px;}
+  5% { height: 300px; width: 300px;}
+  100% { height: 250px; width: 250px;}
 }
