@@ -1,0 +1,82 @@
+body{
+	background-image: linear-gradient(#2D2424, grey);
+	height: 100%;
+	margin: 0;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+#body {
+	display: flex;
+	flex-direction: column;
+}
+
+#header {
+	display: flex;
+	justify-content: right;
+	text-align: center;
+	flex-direction: row;
+	background-color: lightgrey;
+	position: fixed;
+	width: 100%;
+}
+
+.urls {
+	text-decoration: none;
+	color: white;
+	font-family:  monospace;
+	font-size: 13pt;
+}
+
+#header > div {
+	padding: 1%;
+}
+
+#header #title {
+/*	padding-right: 35%;*/
+	text-align: center;
+	justify-content: center;
+	margin: 0;
+    padding: 0;
+	width: 150px;
+	height: 40px;
+}
+
+#main {
+	display: flex;
+	margin: 0;
+    padding: 0;
+	flex-direction: column; 
+	justify-content: center;
+	margin: 3.8%;
+}
+
+#footer {
+	display: flex;
+	justify-content: center;
+	background-color: lightgrey;
+	padding: 10px;
+	bottom: 0;
+	width: 100%;
+}
+
+.text {
+	font-family:  monospace;
+	color: white;
+}
+
+#single-advert {
+	font-size: 26pt;
+}
+
+#concert-advert {
+	font-size: 23pt;
+}
+
+.ul {
+	font-size: 18pt; list-style-position: inside; padding-left: 34%; margin: 0; color: white;
+}
+
+#video-player {
+	border-radius: 3px;
+}
