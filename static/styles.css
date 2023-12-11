@@ -94,18 +94,18 @@ a {
 }
 
 .member-photo {
-	width: 250px;
-	height: 250px;
+	width: 0px;
+	height: 0px;
 	padding-left: 3%;
 }
 
 .member-photo:hover {
-    animation-name: bounce;
+    animation-name: enlarge;
     animation-duration: 5s;
     animation-fill-mode: forwards;
 }
 
-@keyframes bounce {
+@keyframes enlarge {
   0%  { height: 250px; width: 250px;}
   5% { height: 300px; width: 300px;}
   100% { height: 250px; width: 250px;}

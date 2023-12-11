@@ -36,5 +36,40 @@
 					</ul>
 			</div>
 		</div>
+
+		<script>
+			function fadeIn() {
+
+				let i = 200;
+				
+				let interval = setInterval(() => {
+					if (i >= 250) {
+						clearInterval(interval);
+					}
+
+					images[0].style.height = `${i}px`;
+					images[0].style.width = `${i}px`;
+					
+					images[1].style.height = `${i}px`;
+					images[1].style.width = `${i}px`;
+					
+					images[2].style.height = `${i}px`;
+					images[2].style.width = `${i}px`;
+					
+					images[3].style.height = `${i}px`;
+					images[3].style.width = `${i}px`;
+
+					images[4].style.height = `${i}px`;
+					images[4].style.width = `${i}px`;
+
+					i++;
+
+				}, 30);
+
+			}
+
+			let images = document.getElementsByClassName('member-photo');
+			window.addEventListener('load', (event) => { fadeIn() });
+		</script>
 	</body>
 </html>
