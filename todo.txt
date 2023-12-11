@@ -10,4 +10,6 @@ members' information page x
 
 merch store page x
 
-fill members' information page
+fill members' information page x
+
+animate images 
