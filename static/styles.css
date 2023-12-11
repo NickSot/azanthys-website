@@ -94,7 +94,18 @@ a {
 }
 
 .member-photo {
-	width: 15%;
-	height: 9%;
+	width: 250px;
+	height: 250px;
 	padding-left: 3%;
+}
+
+.member-photo:hover {
+    animation-name: bounce;
+    animation-duration: 0.7s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes bounce {
+  from  { height: 250px; width: 250px;}
+  to { height: 300px; width: 300px;}
 }
