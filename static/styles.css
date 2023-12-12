@@ -110,3 +110,12 @@ a {
   5% { height: 300px; width: 300px;}
   100% { height: 250px; width: 250px;}
 }
+
+.audio-platform-url {
+	padding: 20px;
+}
+
+#band-bio {
+	text-align: center;
+	padding: 2%;
+}
