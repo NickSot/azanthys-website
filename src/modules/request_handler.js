@@ -11,6 +11,12 @@ const handleRequest = (request, response) => {
 			case '/static/logo.png':
 				endpoints.resource(response, './static/logo.png', 'image/png');
 				break;
+			case '/static/spotify_logo.png':
+				endpoints.resource(response, './static/spotify_logo.png', 'image/png');
+				break;
+			case '/static/apple_music_logo.png':
+				endpoints.resource(response, './static/apple_music_logo.png', 'image/png');
+				break;
 			case '/static/ivo.jpg':
 				endpoints.resource(response, './static/ivo.jpg', 'image/jpg');
 				break;
