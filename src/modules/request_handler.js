@@ -14,6 +14,9 @@ const handleRequest = (request, response) => {
 			case '/static/spotify_logo.png':
 				endpoints.resource(response, './static/spotify_logo.png', 'image/png');
 				break;
+			case '/static/yt-logo.png':
+				endpoints.resource(response, './static/yt-logo.png', 'image/png');
+				break;
 			case '/static/apple_music_logo.png':
 				endpoints.resource(response, './static/apple_music_logo.png', 'image/png');
 				break;
@@ -49,6 +52,9 @@ const handleRequest = (request, response) => {
 				break;
 			case '/static/band.txt':
 				endpoints.resource(response, './static/band.txt', 'text/plain');
+				break;
+			case '/static/gig_dates.txt':
+				endpoints.resource(response, './static/gig_dates.txt', 'text/html');
 				break;
 
 			// pages

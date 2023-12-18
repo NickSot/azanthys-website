@@ -26,6 +26,11 @@
 
 				<div style='font-size: 11pt;  display: flex; flex-direction: row; justify-content: center; '>
 					<div class='audio-platform-url'>
+						<a href="https://www.youtube.com/@azanthys" class='urls'>
+							<img src="/static/yt-logo.png" style='width: 100; height: 70px;' alt="Youtube"/>
+						</a>
+					</div>
+					<div class='audio-platform-url'>
 						<a href="https://open.spotify.com/artist/654k0t93g3icrkWjlvGKcw?si=XJQbr_oXSHeZxFtJiQGIeA" class='urls'>
 							<img src="/static/spotify_logo.png" style='width: 100; height: 70px;' alt="Spotify"/>
 						</a>
@@ -39,19 +44,7 @@
 
 				<div class='text' style='font-size: 18pt;  text-align: center; list-style-position: inside;'>
 					<p class='text' id='concert-advert' > Upcoming concerts & shows </p>
-					<ul class='text'> 
-						<li>
-							upcoming show 1 [<a href="">Concert Link</a>]
-						</li>
-						<li>
-							upcoming show 2 [<a href="">Concert Link</a>]
-						</li>
-						<li>
-							upcoming show 3 [<a href="">Concert Link</a>]
-						</li>
-						<li>
-							upcoming show 4 [<a href="">Concert Link</a>]
-						</li>
+					<ul class='text' id='concert-advert-list'> 
 
 					</ul>
 				</div>
@@ -70,5 +63,26 @@
 					</ul>
 			</div>
 		</div>
+
+		<script>
+
+			let concertList = document.getElementById('concert-advert-list');
+
+			function loadGigs() {
+				const xhttp = new XMLHttpRequest();
+
+				xhttp.open("GET", `/static/gig_dates.txt`, true);
+				xhttp.send();
+
+				xhttp.onload = function() {
+		    		concertList.innerHTML = this.responseText;
+			    }
+			}
+
+			window.onload = () => {
+				loadGigs();
+			}
+
+		</script>
 	</body>
 </html>

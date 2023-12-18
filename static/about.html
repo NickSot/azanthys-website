@@ -75,12 +75,12 @@
 			function loadBio(name) {
 				const xhttp = new XMLHttpRequest();
 
-					xhttp.open("GET", `/static/${name}.txt`, true);
-  					xhttp.send();
+				xhttp.open("GET", `/static/${name}.txt`, true);
+				xhttp.send();
 
-  					xhttp.onload = function() {
-				    	bio.innerHTML = this.responseText;
-				    }
+				xhttp.onload = function() {
+		    		bio.innerHTML = this.responseText;
+			    }
 			}
 
 			let images = document.getElementsByClassName('member-photo');
