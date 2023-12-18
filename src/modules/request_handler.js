@@ -32,6 +32,24 @@ const handleRequest = (request, response) => {
 			case '/static/pesho.jpg':
 				endpoints.resource(response, './static/pesho.jpg', 'image/jpg');
 				break;
+			case '/static/ivo.txt':
+				endpoints.resource(response, './static/ivo.txt', 'text/plain');
+				break;
+			case '/static/mitko.txt':
+				endpoints.resource(response, './static/mitko.txt', 'text/plain');
+				break;
+			case '/static/nedi.txt':
+				endpoints.resource(response, './static/nedi.txt', 'text/plain');
+				break;
+			case '/static/yasen.txt':
+				endpoints.resource(response, './static/yasen.txt', 'text/plain');
+				break;
+			case '/static/pesho.txt':
+				endpoints.resource(response, './static/pesho.txt', 'text/plain');
+				break;
+			case '/static/band.txt':
+				endpoints.resource(response, './static/band.txt', 'text/plain');
+				break;
 
 			// pages
 			case '/':
@@ -42,6 +60,9 @@ const handleRequest = (request, response) => {
 				break;
 			case '/shop':
 				endpoints.resource(response, './static/shop.html', 'text/html');
+				break;
+			case '/cms':
+				endpoints.resource(response, './static/cms.html', 'text/html');
 				break;
 			default:
 				endpoints.notFound(response);

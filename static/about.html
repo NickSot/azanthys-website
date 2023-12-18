@@ -15,6 +15,7 @@
 			</div>
 
 			<div id='main'>
+				<div id='about-title' class='text'><h1>The Members of Azanthys</h1></div>
 				<!-- design the members page, such that it is interactive -->
 				<div id='member-images'>
 					<img src="/static/ivo.jpg" class='member-photo'>
@@ -25,7 +26,7 @@
 				</div>
 
 				<div id='band-bio' class='text'>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					
 				</div>
 			</div>
 
@@ -69,11 +70,34 @@
 					i++;
 
 				}, 30);
+			}
 
+			function loadBio(name) {
+				const xhttp = new XMLHttpRequest();
+
+					xhttp.open("GET", `/static/${name}.txt`, true);
+  					xhttp.send();
+
+  					xhttp.onload = function() {
+				    	bio.innerHTML = this.responseText;
+				    }
 			}
 
 			let images = document.getElementsByClassName('member-photo');
-			window.addEventListener('load', (event) => { fadeIn() });
+			let bio = document.getElementById('band-bio');
+			let names = ['ivo', 'mitko', 'nedi', 'yasen', 'pesho'];
+
+			for (let i = 0; i < images.length; i++) {
+				images[i].onmouseover = () => {
+					loadBio(names[i]);
+				}
+
+				images[i].onmouseout = () => {
+					loadBio('band');
+				}
+			}
+
+			window.addEventListener('load', (event) => { fadeIn(); loadBio('band'); });
 		</script>
 	</body>
 </html>
