@@ -9,52 +9,55 @@ const handleRequest = (request, response) => {
 				endpoints.resource(response, './static/styles.css', 'text/css');
 				break;
 			case '/static/logo.png':
-				endpoints.resource(response, './static/logo.png', 'image/png');
+				endpoints.resource(response, './static/images/logo.png', 'image/png');
 				break;
 			case '/static/spotify_logo.png':
-				endpoints.resource(response, './static/spotify_logo.png', 'image/png');
+				endpoints.resource(response, './static/images/spotify_logo.png', 'image/png');
 				break;
 			case '/static/yt-logo.png':
-				endpoints.resource(response, './static/yt-logo.png', 'image/png');
+				endpoints.resource(response, './static/images/yt-logo.png', 'image/png');
 				break;
 			case '/static/apple_music_logo.png':
-				endpoints.resource(response, './static/apple_music_logo.png', 'image/png');
+				endpoints.resource(response, './static/images/apple_music_logo.png', 'image/png');
 				break;
 			case '/static/ivo.jpg':
-				endpoints.resource(response, './static/ivo.jpg', 'image/jpg');
+				endpoints.resource(response, './static/images/ivo.jpg', 'image/jpg');
 				break;
 			case '/static/mitko.jpg':
-				endpoints.resource(response, './static/mitko.jpg', 'image/jpg');
+				endpoints.resource(response, './static/images/mitko.jpg', 'image/jpg');
 				break;
 			case '/static/nedi.jpg':
-				endpoints.resource(response, './static/nedi.jpg', 'image/jpg');
+				endpoints.resource(response, './static/images/nedi.jpg', 'image/jpg');
 				break;
 			case '/static/yasen.jpg':
-				endpoints.resource(response, './static/yasen.jpg', 'image/jpg');
+				endpoints.resource(response, './static/images/yasen.jpg', 'image/jpg');
 				break;
 			case '/static/pesho.jpg':
-				endpoints.resource(response, './static/pesho.jpg', 'image/jpg');
+				endpoints.resource(response, './static/images/pesho.jpg', 'image/jpg');
 				break;
 			case '/static/ivo.txt':
-				endpoints.resource(response, './static/ivo.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/ivo.txt', 'text/plain');
 				break;
 			case '/static/mitko.txt':
-				endpoints.resource(response, './static/mitko.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/mitko.txt', 'text/plain');
 				break;
 			case '/static/nedi.txt':
-				endpoints.resource(response, './static/nedi.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/nedi.txt', 'text/plain');
 				break;
 			case '/static/yasen.txt':
-				endpoints.resource(response, './static/yasen.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/yasen.txt', 'text/plain');
 				break;
 			case '/static/pesho.txt':
-				endpoints.resource(response, './static/pesho.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/pesho.txt', 'text/plain');
 				break;
 			case '/static/band.txt':
-				endpoints.resource(response, './static/band.txt', 'text/plain');
+				endpoints.resource(response, './static/meta/band.txt', 'text/plain');
 				break;
 			case '/static/gig_dates.txt':
-				endpoints.resource(response, './static/gig_dates.txt', 'text/html');
+				endpoints.resource(response, './static/meta/gig_dates.txt', 'text/html');
+				break;
+			case '/static/single_url.txt':
+				endpoints.resource(response, './static/meta/single_url.txt', 'text/html');
 				break;
 
 			// pages
