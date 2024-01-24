@@ -17,7 +17,7 @@
 			<div id='main'>
 				<div style='text-align: center;'>
 					<p id='single-advert' class='text' >Check out our latest single <b> >> Cybersecurity <<</b> !!!</p>
-					<iframe id='video-player' width="70%" height="300px" src="https://www.youtube.com/embed/e9PN_RRKhRE" allowfullscreen></iframe>
+					<iframe id='video-player' width="70%" height="300px" src="" allowfullscreen></iframe>
 				</div>
 
 				<div class='text' style='font-size: 24pt;  text-align: center; color: white'>
@@ -65,10 +65,8 @@
 		</div>
 
 		<script>
-
-			let concertList = document.getElementById('concert-advert-list');
-
 			function loadGigs() {
+				let concertList = document.getElementById('concert-advert-list');
 				const xhttp = new XMLHttpRequest();
 
 				xhttp.open("GET", `/static/gig_dates.txt`, true);
@@ -79,8 +77,21 @@
 			    }
 			}
 
+			function loadSingleUrl() {
+				let singleUrl = document.getElementById('video-player');
+				const xhttp = new XMLHttpRequest();
+
+				xhttp.open("GET", `/static/single_url.txt`, true);
+				xhttp.send();
+
+				xhttp.onload = function() {
+		    		singleUrl.src = this.responseText;
+			    }
+			}
+
 			window.onload = () => {
 				loadGigs();
+				loadSingleUrl();
 			}
 
 		</script>
