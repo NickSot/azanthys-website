@@ -27,20 +27,19 @@ function get_sbox(state) {
         [0xba,	0x78,	0x25,	0x2e,	0x1c,	0xa6,	0xb4,	0xc6,	0xe8,	0xdd,	0x74,	0x1f,	0x4b,	0xbd,	0x8b,	0x8a],
         [0x70,	0x3e,	0xb5,	0x66,	0x48,	0x03,	0xf6,	0x0e,	0x61,	0x35,	0x57,	0xb9,	0x86,	0xc1,	0x1d,	0x9e],
         [0xe1,	0xf8,	0x98,	0x11,	0x69,	0xd9,	0x8e,	0x94,	0x9b,	0x1e,	0x87,	0xe9,	0xce,	0x55,	0x28,	0xdf],
-        [0x8c,	0xa1,	0x89,	0x0d,	0xbf,	0xe6,	0x42,	0x68,	0x41,	0x99,	0x2d,	0x0f,	0xb0,	0x54,	0xbb,	0x16]];
+        [0x8c,	0xa1,	0x89,	0x0d,	0xbf,	0xe6,	0x42,	0x68,	0x41,	0x99,	0x2d,	0x0f,	0xb0,	0x54,	0xbb,	0x16]
+    ];
 
 
     for (let i = 0; i < state.length; i++) {
         state_hex = state[i].toString(16);
 
         if (state_hex.length == 2) {
-            s_box.push(parseInt(s_box_lookup[parseInt(state_hex[0], 16)][parseInt(state_hex[1], 16)], 16));
+            s_box.push(s_box_lookup[parseInt(`${state_hex[0]}`, 16)][parseInt(`${state_hex[1]}`, 16)]);
         }
         else {
-            s_box.push(parseInt(s_box_lookup[parseInt(state_hex[0], 16)][0], 16));
+            s_box.push(s_box_lookup[0][parseInt(`${state_hex[0]}`, 16)]);        
         }
-
-        console.log(s_box[i]);
     }
 
     return s_box;
@@ -66,26 +65,22 @@ function get_reverse_sbox(state) {
         [0x60,	0x51,	0x7f,	0xa9,	0x19,	0xb5,	0x4a,	0x0d,	0x2d,	0xe5,	0x7a,	0x9f,	0x93,	0xc9,	0x9c,	0xef],
         [0xa0,	0xe0,	0x3b,	0x4d,	0xae,	0x2a,	0xf5,	0xb0,	0xc8,	0xeb,	0xbb,	0x3c,	0x83,	0x53,	0x99,	0x61],
         [0x17,	0x2b,	0x04,	0x7e,	0xba,	0x77,	0xd6,	0x26,	0xe1,	0x69,	0x14,	0x63,	0x55,	0x21,	0x0c,	0x7d]
-    ]
+    ];
  
     for (let i = 0; i < state.length; i++) {
         state_hex = state[i].toString(16);
 
         if (state_hex.length == 2) {
-            s_box.push(parseInt(inverse_s_box_lookup[parseInt(state_hex[0], 16)][parseInt(state_hex[1], 16)], 16));
+            s_box.push(inverse_s_box_lookup[parseInt(`${state_hex[0]}`, 16)][parseInt(`${state_hex[1]}`, 16)]);
         }
         else {
-            s_box.push(parseInt(inverse_s_box_lookup[parseInt(state_hex[0], 16)][0], 16));
+            s_box.push(inverse_s_box_lookup[0][parseInt(`${state_hex[0]}`, 16)]);        
         }
     }
 
     return s_box;
 }
 
-console.log(get_sbox(get_reverse_sbox(key)));
-console.log(get_reverse_sbox(get_sbox(key)));
-
-// TODO: finish
 function expand_key(key) {
     rcon = [1, 2, 4, 8, 10, 32, 64, 128, 27, 54]
 
@@ -152,10 +147,15 @@ function get_round_keys(final_key) {
 
 function addRoundKey(text, round_key) {
     let result = [];
+
+    console.log(text.length);
     
     for (let i = 0; i < text.length; i++) {
         result.push(text[i] ^ round_key[i]);
+        console.log(result);
     }
+
+    console.log(result.length);
 
     return result;
 }
@@ -289,7 +289,7 @@ function encrypt(plainText, key) {
 
     for (let i = 1; i < 10; i++) {
         // sub bytes
-        // cipher_text = get_sbox(cipher_text);
+        cipher_text = get_sbox(cipher_text);
 
         // shift rows
         shift_rows(cipher_text);
@@ -300,7 +300,7 @@ function encrypt(plainText, key) {
     }
 
     
-    // cipher_text = get_sbox(cipher_text);
+    cipher_text = get_sbox(cipher_text);
     shift_rows(cipher_text);
     cipher_text = addRoundKey(cipher_text, round_keys[10]);
 
@@ -318,7 +318,7 @@ function decrypt(cipher_text, key) {
 
     let plain_text = addRoundKey(enc_text, round_keys[10]);
     reverse_shift_rows(plain_text);
-    // plain_text = get_reverse_sbox(plain_text);
+    plain_text = get_reverse_sbox(plain_text);
 
     for (let i = 9; i > 0; i--) {
         // add round key
@@ -329,7 +329,7 @@ function decrypt(cipher_text, key) {
         reverse_shift_rows(plain_text);
 
         // sub bytes
-        // plain_text = get_reverse_sbox(plain_text);
+        plain_text = get_reverse_sbox(plain_text);
     }
 
     plain_text = addRoundKey(plain_text, round_keys[0]);
@@ -337,6 +337,6 @@ function decrypt(cipher_text, key) {
     return decode_string(plain_text);
 }
 
-console.log(decrypt(encrypt('asdhghfjs', key), key));
+console.log(decrypt(encrypt("aliceinchainsisaniceband.", key), key))
 
 module.exports = {encrypt, decrypt};
