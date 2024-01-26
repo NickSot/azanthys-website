@@ -100,6 +100,8 @@ const handleRequest = (request, response) => {
 				break;
 
 			case '/cms':
+				console.log(request.headers);
+
 				let getPass = () => {
 					if (request.url.split('?').length < 2) {
 						return false;
@@ -153,10 +155,20 @@ const handleRequest = (request, response) => {
 
 					stamps.push(stamp);
 
+					request.headers['Cookies'] = {
+						token: 'access_token'
+					};
+
 					return true;
 				};
 
-				let allow = getPass();
+				let allow = true;
+
+				if (!request.headers['Cookies']) {
+					allow = getPass();
+				}
+				
+				console.log(request.headers);
 
 				endpoints.resource(response, './static/cms.html', 'text/html', allow);
 
