@@ -26,8 +26,14 @@ const resource = (response, resourcePath, contentType, securityCallback = true, 
 	});
 }
 
+const post = (response, resourcePath, content) => {
+	fs.writeFile('./' + resourcePath, content, 'utf8', () => {
+		respond(response, 200, 'text/plain', 'OK');
+	});
+}
+
 const notFound = (response) => {
 	respond(response, 404, 'text/plain', 'Not Found!');
 }
 
-module.exports = {resource, notFound, respond};
+module.exports = {resource, notFound, respond, post};

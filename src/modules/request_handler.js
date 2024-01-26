@@ -127,12 +127,9 @@ const handleRequest = (request, response) => {
 					catch(error) {
 						return false;
 					}
-
-					console.log(query);
 					
 					try{
 						query = cryptography.decrypt(query, cryptography.key);
-						console.log(query);
 					}
 					catch(error) {
 						return false;
@@ -162,6 +159,27 @@ const handleRequest = (request, response) => {
 				let allow = getPass();
 
 				endpoints.resource(response, './static/cms.html', 'text/html', allow);
+
+				break;
+
+			default:
+				endpoints.notFound(response);
+		}
+	}
+	else if (request.method == 'POST') {
+		switch (request.url) {
+			case '/static/band.txt':
+				request.on('data', (data) => {
+					data = decodeURI(data.toString('utf-8'));
+
+					console.log(data);
+
+					endpoints.post(response, './static/meta/band.txt', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
 
 				break;
 
