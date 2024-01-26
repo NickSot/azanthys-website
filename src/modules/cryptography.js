@@ -1,13 +1,14 @@
+const { assert } = require('console');
 const fs = require('fs');
 
-const key = [
-    3, 1, 5, 1, 0, 0, 7, 1, 1, 1, 1, 3, 3, 7, 2, 2
-];
+assert(fs.existsSync('./key.txt'));
 
-function lss(x, n, l=8) {
-    return (2^l - 1) & ((x << n) | (x >> (8 - n)));
-}
+// define the key
+const key = fs.readFileSync('./key.txt').toString().split(' ').map((element) => {
+    return parseInt(element);
+});
 
+// function to get the sbox of a state
 function get_sbox(state) {
     s_box = []
 
@@ -45,6 +46,7 @@ function get_sbox(state) {
     return s_box;
 }
 
+// function to get the reverse sbox of an sboxed state
 function get_reverse_sbox(state) {
     let s_box = [];
 
@@ -81,11 +83,14 @@ function get_reverse_sbox(state) {
     return s_box;
 }
 
+// key expansion algorithm
 function expand_key(key) {
     rcon = [1, 2, 4, 8, 10, 32, 64, 128, 27, 54]
 
     let final_key = [];
 
+    // weird inner loops, as there should be a 1-byte shift for key each position,
+    // according to the protocol description
     for (let i = 0; i < 44; i += 4) {
         if (i < 4) {
             for (let j = 0; j < 4; j++) {
@@ -122,13 +127,6 @@ function expand_key(key) {
     return final_key;
 }
 
-let arr = [
-    172, 179, 157, 201, 119,
-    161,   3, 189,  34,  16,
-    166,  10, 172, 196, 101,
-     96
-  ];
-
 function get_round_keys(final_key) {
     const result = [];
 
@@ -147,15 +145,10 @@ function get_round_keys(final_key) {
 
 function addRoundKey(text, round_key) {
     let result = [];
-
-    console.log(text.length);
     
     for (let i = 0; i < text.length; i++) {
         result.push(text[i] ^ round_key[i]);
-        console.log(result);
     }
-
-    console.log(result.length);
 
     return result;
 }
@@ -225,6 +218,7 @@ function GMul(a, b) { // Galois Field (256) Multiplication of two Bytes
     return p;
 }
 
+// mix columns algorithm, as per algorithm specification
 function mix_columns(s) {
     let ss = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -238,6 +232,7 @@ function mix_columns(s) {
     return ss;
 }
 
+// reverse mix columns algorithm, as per algorithm specification
 function reverse_mix_columns(s) {
     let ss = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -251,6 +246,7 @@ function reverse_mix_columns(s) {
     return ss;
 }
 
+// encode a string into an array of bytes
 function encode_string(str) {
     var bytes = []; // char codes
     var bytesv2 = []; // char codes
@@ -266,6 +262,7 @@ function encode_string(str) {
     return bytesv2;
 }
 
+// decode an array of bytes into a utf-8 string
 function decode_string(byte_array) {
     let str = byte_array
     .map((byte) => {
@@ -276,6 +273,7 @@ function decode_string(byte_array) {
     return str;
 }
 
+// encrypt a plain text using the key
 function encrypt(plainText, key) {
     enc_text = encode_string(plainText);
 
@@ -283,60 +281,90 @@ function encrypt(plainText, key) {
         enc_text.push(0)
     }
 
-    let round_keys = get_round_keys(expand_key(key));
+    // segment the plain text into 16-byte chunks and encrypt each separately
+    let enc_text_segments = [[]]
+    let counter = 0;
 
-    let cipher_text = addRoundKey(enc_text, round_keys[0]);
+    for (let i = 0; i < enc_text.length; i++) {
+        if (i % 16 == 0 && i > 0) {
+            enc_text_segments.push([]);
+            counter++;
+        }
 
-    for (let i = 1; i < 10; i++) {
-        // sub bytes
-        cipher_text = get_sbox(cipher_text);
-
-        // shift rows
-        shift_rows(cipher_text);
-        // mix rows
-        cipher_text = mix_columns(cipher_text);
-        // add round key
-        cipher_text = addRoundKey(cipher_text, round_keys[i]);
+        enc_text_segments[counter].push(enc_text[i]);
     }
 
-    
-    cipher_text = get_sbox(cipher_text);
-    shift_rows(cipher_text);
-    cipher_text = addRoundKey(cipher_text, round_keys[10]);
+    let ciphers = [];
 
-    return cipher_text;
+    // encryption
+    enc_text_segments.forEach((enc_text) => {
+        let round_keys = get_round_keys(expand_key(key));
+
+        let cipher_text = addRoundKey(enc_text, round_keys[0]);
+
+        for (let i = 1; i < 10; i++) {
+            // sub bytes
+            cipher_text = get_sbox(cipher_text);
+
+            // shift rows
+            shift_rows(cipher_text);
+            // mix rows
+            cipher_text = mix_columns(cipher_text);
+            // add round key
+            cipher_text = addRoundKey(cipher_text, round_keys[i]);
+        }
+        
+        cipher_text = get_sbox(cipher_text);
+        shift_rows(cipher_text);
+        cipher_text = addRoundKey(cipher_text, round_keys[10]);
+
+        let enc_cipher =  cipher_text;
+
+        for (let i = enc_cipher.length; i < 16; i++) {
+            enc_cipher.push(0)
+        }
+
+        ciphers.push(cipher_text);
+    });
+
+    return ciphers;
 }
 
-function decrypt(cipher_text, key) {
-    enc_text =  cipher_text;
+// decrypt the plain text using the key
+function decrypt(ciphers, key) {
+    let plains = [];
 
-    for (let i = enc_text.length; i < 16; i++) {
-        enc_text.push(0)
-    }
+    // decryption
+    ciphers.forEach((cipher_text) => {
+        let round_keys = get_round_keys(expand_key(key));
 
-    let round_keys = get_round_keys(expand_key(key));
-
-    let plain_text = addRoundKey(enc_text, round_keys[10]);
-    reverse_shift_rows(plain_text);
-    plain_text = get_reverse_sbox(plain_text);
-
-    for (let i = 9; i > 0; i--) {
-        // add round key
-        plain_text = addRoundKey(plain_text, round_keys[i]);
-        // mix rows
-        plain_text = reverse_mix_columns(plain_text);
-        // shift rows
+        let plain_text = addRoundKey(cipher_text, round_keys[10]);
         reverse_shift_rows(plain_text);
-
-        // sub bytes
         plain_text = get_reverse_sbox(plain_text);
-    }
 
-    plain_text = addRoundKey(plain_text, round_keys[0]);
+        for (let i = 9; i > 0; i--) {
+            // add round key
+            plain_text = addRoundKey(plain_text, round_keys[i]);
+            // mix rows
+            plain_text = reverse_mix_columns(plain_text);
+            // shift rows
+            reverse_shift_rows(plain_text);
+
+            // sub bytes
+            plain_text = get_reverse_sbox(plain_text);
+        }
+
+        plain_text = addRoundKey(plain_text, round_keys[0]);
+
+        plains.push(plain_text);
+    });
+
+    plains = plains.filter(item => !(item.every(element => element == 0)));
+
+    // concatenate the decrypted 16-byte chunks
+    let plain_text = plains.flat();
 
     return decode_string(plain_text);
 }
-
-console.log(decrypt(encrypt("aliceinchainsisaniceband.", key), key))
 
 module.exports = {encrypt, decrypt};
