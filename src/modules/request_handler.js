@@ -1,4 +1,5 @@
 endpoints =  require('./endpoints.js');
+cryptography = require('./cryptography.js');
 
 // request handler function
 const handleRequest = (request, response) => {
@@ -71,7 +72,21 @@ const handleRequest = (request, response) => {
 				endpoints.resource(response, './static/shop.html', 'text/html');
 				break;
 			case '/cms':
-				endpoints.resource(response, './static/cms.html', 'text/html');
+				endpoints.resource(response, './static/cms.html', 'text/html', () => {
+					let query = request.query['password'];
+					cryptography.decrypt(query, cryptography.key);
+					
+					let password = 'the exodus to our escape';
+
+					for (let i = 0; i < password.length; i++) {
+						if (password[i] != query[i]) {
+							return false;
+						}
+					}
+
+					return true;
+				});
+
 				break;
 			default:
 				endpoints.notFound(response);

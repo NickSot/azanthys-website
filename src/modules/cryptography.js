@@ -369,4 +369,4 @@ function decrypt(ciphers, key) {
     return decode_string(plain_text);
 }
 
-module.exports = {encrypt, decrypt};
+module.exports = {encrypt, decrypt, key};

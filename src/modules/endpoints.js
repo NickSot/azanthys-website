@@ -8,12 +8,16 @@ const respond = (response, statusCode, contentType, content) => {
 }
 
 // HTTP service endpoints
-const resource = (response, resourcePath, contentType) => {
+const resource = (response, resourcePath, contentType, securityCallback = () => { return true; }) => {
 	let resource = fs.readFile("./" + resourcePath, (error, result) => {
 		if (error) {
 			console.log(error);
 			respond(response, 500, 'text/plain', 'Internal Server Error!');
-		} else {
+		}
+		else if (!securityCallback()) {
+			respond(response, 403, contentType, result);
+		}
+		else {
 			respond(response, 200, contentType, result);
 		}
 	});
