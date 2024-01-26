@@ -261,7 +261,7 @@ function encode_string(str) {
         bytesv2 = bytesv2.concat([code & 0xff, code / 256 >>> 0]);
     }
 
-    return bytesv2;
+    return bytes;
 }
 
 // decode an array of bytes into a utf-8 string
@@ -329,15 +329,27 @@ function encrypt(plainText, key) {
         ciphers.push(cipher_text);
     });
 
-    return ciphers;
+    return ciphers.flat();
 }
 
 // decrypt the plain text using the key
 function decrypt(ciphers, key) {
+    let enc_text_segments = [[]]
+    let counter = 0;
+
+    for (let i = 0; i < ciphers.length; i++) {
+        if (i % 16 == 0 && i > 0) {
+            enc_text_segments.push([]);
+            counter++;
+        }
+
+        enc_text_segments[counter].push(ciphers[i]);
+    }
+
     let plains = [];
 
     // decryption
-    ciphers.forEach((cipher_text) => {
+    enc_text_segments.forEach((cipher_text) => {
         let round_keys = get_round_keys(expand_key(key));
 
         let plain_text = addRoundKey(cipher_text, round_keys[10]);
@@ -369,4 +381,4 @@ function decrypt(ciphers, key) {
     return decode_string(plain_text);
 }
 
-module.exports = {encrypt, decrypt, key};
+module.exports = {encrypt, decrypt, key, decode_string, encode_string};

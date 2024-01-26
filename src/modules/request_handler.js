@@ -1,10 +1,15 @@
-endpoints =  require('./endpoints.js');
-cryptography = require('./cryptography.js');
+const endpoints =  require('./endpoints.js');
+const cryptography = require('./cryptography.js');
+
+let stamps = []
+
+// create a timestamp list that collects data about the time a message was sent from a client
+// so that replication of messages cannot be made in the same 24 hour interval
 
 // request handler function
-const handleRequest = (request, response) => {
+const handleRequest = (request, response, stampObject) => {
 	if (request.method == "GET") {
-		switch (request.url) {
+		switch (request.url.split('?')[0]) {
 			// resources
 			case '/static/styles.css':
 				endpoints.resource(response, './static/styles.css', 'text/css');
@@ -72,28 +77,80 @@ const handleRequest = (request, response) => {
 				endpoints.resource(response, './static/shop.html', 'text/html');
 				break;
 			case '/cms':
-				endpoints.resource(response, './static/cms.html', 'text/html', () => {
-					let query = request.query['password'];
-					cryptography.decrypt(query, cryptography.key);
+				console.log(stamps);
+
+				let getPass = () => {
+					if (request.url.split('?').length < 2) {
+						return false;
+					}
+
+					let query = request.url.split('?')[1].split('=');
+					if (query[0] != 'password') {
+						return false;
+					}
+					// http://127.0.0.1:5000/cms?password={"p":[24,40,27,110,105,228,228,105,241,22,147,163,136,76,24,170,214,171,149,192,222,242,138,207,145,69,39,70,3,17,182,130]}
+
+					try{
+						query = query.filter(x => !(x == 'password'));
+						query = decodeURI(query);
+						query = JSON.parse(query)['p'];
+					}
+					catch(error) {
+						return false;
+					}
+
+					let password = 'the_exodus';
 					
-					let password = 'the exodus to our escape';
+					try{
+						query = cryptography.decrypt(query, cryptography.key);
+					}
+					catch(error) {
+						return false;
+					}
+
+					if (query.length < password + 7) {
+						return false;
+					}
 
 					for (let i = 0; i < password.length; i++) {
-						if (password[i] != query[i]) {
+						if (password[i] != query[i + 7]) {
 							return false;
 						}
 					}
 
+					let stamp = query.substring(0, 6);
+
+					if (stamps.includes(stamp)) {
+						return false;
+					}
+
+					stamps.push(stamp);
+
 					return true;
-				});
+				};
+
+				let allow = getPass();
+
+				endpoints.resource(response, './static/cms.html', 'text/html', allow);
 
 				break;
+
 			default:
 				endpoints.notFound(response);
 		}
-	} else {
+	}
+	
+	else if (request.method == 'POST') {
+
+	}
+
+	else {
 		notFound(response);
 	}
 }
 
-module.exports = handleRequest;
+function clearStamps() {
+	stamps = [];
+}
+
+module.exports = { handleRequest, clearStamps};

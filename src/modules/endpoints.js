@@ -8,14 +8,14 @@ const respond = (response, statusCode, contentType, content) => {
 }
 
 // HTTP service endpoints
-const resource = (response, resourcePath, contentType, securityCallback = () => { return true; }) => {
-	let resource = fs.readFile("./" + resourcePath, (error, result) => {
+const resource = (response, resourcePath, contentType, securityCallback = true) => {
+	fs.readFile("./" + resourcePath, (error, result) => {
 		if (error) {
 			console.log(error);
 			respond(response, 500, 'text/plain', 'Internal Server Error!');
 		}
-		else if (!securityCallback()) {
-			respond(response, 403, contentType, result);
+		else if (!securityCallback) {
+			respond(response, 403, contentType, 'Not autorized!');
 		}
 		else {
 			respond(response, 200, contentType, result);
