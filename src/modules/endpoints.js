@@ -8,7 +8,7 @@ const respond = (response, statusCode, contentType, content) => {
 }
 
 // HTTP service endpoints
-const resource = (response, resourcePath, contentType, securityCallback = true) => {
+const resource = (response, resourcePath, contentType, securityCallback = true, redirect=false) => {
 	fs.readFile("./" + resourcePath, (error, result) => {
 		if (error) {
 			console.log(error);
@@ -16,6 +16,9 @@ const resource = (response, resourcePath, contentType, securityCallback = true) 
 		}
 		else if (!securityCallback) {
 			respond(response, 403, contentType, 'Not autorized!');
+		}
+		else if (redirect) {
+			respond(response, 302, contentType, result);
 		}
 		else {
 			respond(response, 200, contentType, result);
@@ -27,4 +30,4 @@ const notFound = (response) => {
 	respond(response, 404, 'text/plain', 'Not Found!');
 }
 
-module.exports = {resource, notFound};
+module.exports = {resource, notFound, respond};

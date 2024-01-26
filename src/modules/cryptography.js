@@ -1,9 +1,6 @@
-const { assert } = require('console');
 const fs = require('fs');
 
-// manual implementation of AES
-
-assert(fs.existsSync('./key.txt'));
+// INFO: manual implementation of AES
 
 // define the key
 const key = fs.readFileSync('./key.txt').toString().split(' ').map((element) => {

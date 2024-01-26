@@ -7,7 +7,7 @@ let stamps = []
 // so that replication of messages cannot be made in the same 24 hour interval
 
 // request handler function
-const handleRequest = (request, response, stampObject) => {
+const handleRequest = (request, response) => {
 	if (request.method == "GET") {
 		switch (request.url.split('?')[0]) {
 			// resources
@@ -76,9 +76,30 @@ const handleRequest = (request, response, stampObject) => {
 			case '/shop':
 				endpoints.resource(response, './static/shop.html', 'text/html');
 				break;
-			case '/cms':
-				console.log(stamps);
+			case '/admin':
+				let query = request.url.split('?');
+				query = decodeURI(query);
 
+				if (!request.url.split('?')[1]) {
+					endpoints.resource(response, './static/admin.html', 'text/html');
+				}
+				else {
+					let password = query.split('=')[1];
+
+					if (!password) {
+						endpoints.respond(response, 200, 'text/plain', 'http://127.0.0.1:5000/admin');
+					}
+					else {
+						let queryObject = {"p": decodeURI(password)};
+						let url = `http://127.0.0.1:5000/cms?password=${JSON.stringify(queryObject)}`;
+						
+						endpoints.respond(response, 200, 'text/plain', url);
+					}
+				}
+
+				break;
+
+			case '/cms':
 				let getPass = () => {
 					if (request.url.split('?').length < 2) {
 						return false;
@@ -88,7 +109,6 @@ const handleRequest = (request, response, stampObject) => {
 					if (query[0] != 'password') {
 						return false;
 					}
-					// http://127.0.0.1:5000/cms?password={"p":[24,40,27,110,105,228,228,105,241,22,147,163,136,76,24,170,214,171,149,192,222,242,138,207,145,69,39,70,3,17,182,130]}
 
 					try{
 						query = query.filter(x => !(x == 'password'));
@@ -100,9 +120,19 @@ const handleRequest = (request, response, stampObject) => {
 					}
 
 					let password = 'the_exodus';
+
+					try {
+						query = JSON.parse("[" + query + "]");
+					}
+					catch(error) {
+						return false;
+					}
+
+					console.log(query);
 					
 					try{
 						query = cryptography.decrypt(query, cryptography.key);
+						console.log(query);
 					}
 					catch(error) {
 						return false;
@@ -139,13 +169,8 @@ const handleRequest = (request, response, stampObject) => {
 				endpoints.notFound(response);
 		}
 	}
-	
-	else if (request.method == 'POST') {
-
-	}
-
 	else {
-		notFound(response);
+		endpoints.notFound(response)
 	}
 }
 
