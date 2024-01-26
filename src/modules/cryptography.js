@@ -1,6 +1,8 @@
 const { assert } = require('console');
 const fs = require('fs');
 
+// manual implementation of AES
+
 assert(fs.existsSync('./key.txt'));
 
 // define the key
