@@ -294,17 +294,21 @@ function encrypt(plainText, key) {
     }
 
     let ciphers = [];
+    counter = -1;
 
     // encryption
     enc_text_segments.forEach((enc_text) => {
         let round_keys = get_round_keys(expand_key(key));
+
+        if (ciphers[counter]) {
+            enc_text = addRoundKey(enc_text, ciphers[counter]);
+        }
 
         let cipher_text = addRoundKey(enc_text, round_keys[0]);
 
         for (let i = 1; i < 10; i++) {
             // sub bytes
             cipher_text = get_sbox(cipher_text);
-
             // shift rows
             shift_rows(cipher_text);
             // mix rows
@@ -315,6 +319,7 @@ function encrypt(plainText, key) {
         
         cipher_text = get_sbox(cipher_text);
         shift_rows(cipher_text);
+        
         cipher_text = addRoundKey(cipher_text, round_keys[10]);
 
         let enc_cipher =  cipher_text;
@@ -324,6 +329,7 @@ function encrypt(plainText, key) {
         }
 
         ciphers.push(cipher_text);
+        counter++;
     });
 
     return ciphers.flat();
@@ -344,12 +350,14 @@ function decrypt(ciphers, key) {
     }
 
     let plains = [];
+    counter = 1;
 
     // decryption
-    enc_text_segments.forEach((cipher_text) => {
+    enc_text_segments.reverse().forEach((cipher_text) => {
         let round_keys = get_round_keys(expand_key(key));
 
         let plain_text = addRoundKey(cipher_text, round_keys[10]);
+
         reverse_shift_rows(plain_text);
         plain_text = get_reverse_sbox(plain_text);
 
@@ -360,22 +368,28 @@ function decrypt(ciphers, key) {
             plain_text = reverse_mix_columns(plain_text);
             // shift rows
             reverse_shift_rows(plain_text);
-
             // sub bytes
             plain_text = get_reverse_sbox(plain_text);
         }
 
         plain_text = addRoundKey(plain_text, round_keys[0]);
 
+        if (enc_text_segments[counter]) {
+            plain_text = addRoundKey(plain_text, enc_text_segments[counter])
+        }
+    
         plains.push(plain_text);
+        counter++;
     });
 
     plains = plains.filter(item => !(item.every(element => element == 0)));
 
     // concatenate the decrypted 16-byte chunks
-    let plain_text = plains.flat();
+    let plain_text = plains.reverse().flat();
 
     return decode_string(plain_text);
 }
+
+console.log(decrypt(encrypt("encryptdecryptasdfjqwhelrkajshdfklwehass", key), key));
 
 module.exports = {encrypt, decrypt, key, decode_string, encode_string};
