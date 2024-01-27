@@ -224,17 +224,21 @@
                 }
 
                 let ciphers = [];
+                counter = -1;
 
                 // encryption
                 enc_text_segments.forEach((enc_text) => {
                     let round_keys = get_round_keys(expand_key(key));
+
+                    if (ciphers[counter]) {
+                        enc_text = addRoundKey(enc_text, ciphers[counter]);
+                    }
 
                     let cipher_text = addRoundKey(enc_text, round_keys[0]);
 
                     for (let i = 1; i < 10; i++) {
                         // sub bytes
                         cipher_text = get_sbox(cipher_text);
-
                         // shift rows
                         shift_rows(cipher_text);
                         // mix rows
@@ -245,6 +249,7 @@
                     
                     cipher_text = get_sbox(cipher_text);
                     shift_rows(cipher_text);
+                    
                     cipher_text = addRoundKey(cipher_text, round_keys[10]);
 
                     let enc_cipher =  cipher_text;
@@ -254,10 +259,12 @@
                     }
 
                     ciphers.push(cipher_text);
+                    counter++;
                 });
 
                 return ciphers.flat();
             }
+
             
             document.getElementById('btn-enter').addEventListener('click', () => {
 				let password = '202020_' + document.getElementById('password').value;
