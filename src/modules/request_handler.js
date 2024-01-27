@@ -159,8 +159,6 @@ const handleRequest = (request, response) => {
 				};
 
 				let allow = true;
-
-				console.log(allowed_hosts);
 				
 				if (!allowed_hosts.includes(request.headers['host']))
 					allow = getPass();
@@ -173,13 +171,81 @@ const handleRequest = (request, response) => {
 				endpoints.notFound(response);
 		}
 	}
-	else if (request.method == 'POST') {
+
+	// ip spoofing??
+	else if (request.method == 'POST' && allowed_hosts.includes(request.headers['host'])) {
 		switch (request.url) {
 			case '/static/band.txt':
 				request.on('data', (data) => {
+					// TODO: parse the input properly!
+					data = decodeURI(data.toString('utf-8'));
+					
+					endpoints.post(response, './static/meta/band.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+
+			case '/static/nedi.txt':
+				request.on('data', (data) => {
 					data = decodeURI(data.toString('utf-8'));
 
-					endpoints.post(response, './static/meta/band.txt', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/nedi.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+
+			case '/static/mitko.txt':
+				request.on('data', (data) => {
+					data = decodeURI(data.toString('utf-8'));
+
+					endpoints.post(response, './static/meta/mitko.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+
+			case '/static/ivo.txt':
+				request.on('data', (data) => {
+					data = decodeURI(data.toString('utf-8'));
+
+					endpoints.post(response, './static/meta/ivo.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+			
+			case '/static/yasen.txt':
+				request.on('data', (data) => {
+					data = decodeURI(data.toString('utf-8'));
+
+					endpoints.post(response, './static/meta/yasen.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+
+			case '/static/pesho.txt':
+				request.on('data', (data) => {
+					data = decodeURI(data.toString('utf-8'));
+
+					endpoints.post(response, './static/meta/pesho.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
 				});
 
 				request.on('end', () => {

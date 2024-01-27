@@ -26,9 +26,9 @@ const resource = (response, resourcePath, contentType, securityCallback = true, 
 	});
 }
 
-const post = (response, resourcePath, content) => {
+const post = (response, resourcePath, contentType, responseContent, content) => {
 	fs.writeFile('./' + resourcePath, content, 'utf8', () => {
-		respond(response, 200, 'text/plain', 'OK');
+		resource(response, responseContent, contentType, true, false);
 	});
 }
 

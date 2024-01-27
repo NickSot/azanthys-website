@@ -1,0 +1,13 @@
+security:
+    - ip authorization
+        - ip spoofing can be implemented to fabricate POST requests that are not welcome
+        - if two people are in the same location and try to modify the resource together, no bueno
+        (easiest spoofing tactic is to be in the same place as the band member)
+
+    - after 1 day, if the attacker contains information about the previous ciphers sent for authentication,
+    they can just authorize as band personnel
+
+front end:
+    - the forms in the cms have to be aligned properly
+    - the bio output has to have the '+' removed
+    - multiple forms input will result in a disaster?
