@@ -2,9 +2,9 @@ const endpoints =  require('./endpoints.js');
 const cryptography = require('./cryptography.js');
 
 let stamps = []
+let allowed_hosts = []
 
-// create a timestamp list that collects data about the time a message was sent from a client
-// so that replication of messages cannot be made in the same 24 hour interval
+// use the client IP to track as to whether it should be possible to edit the files.
 
 // request handler function
 const handleRequest = (request, response) => {
@@ -100,8 +100,6 @@ const handleRequest = (request, response) => {
 				break;
 
 			case '/cms':
-				console.log(request.headers);
-
 				let getPass = () => {
 					if (request.url.split('?').length < 2) {
 						return false;
@@ -155,21 +153,18 @@ const handleRequest = (request, response) => {
 
 					stamps.push(stamp);
 
-					request.headers['Cookies'] = {
-						token: 'access_token'
-					};
+					allowed_hosts.push(request.headers['host']);
 
 					return true;
 				};
 
 				let allow = true;
 
-				if (!request.headers['Cookies']) {
-					allow = getPass();
-				}
+				console.log(allowed_hosts);
 				
-				console.log(request.headers);
-
+				if (!allowed_hosts.includes(request.headers['host']))
+					allow = getPass();
+				
 				endpoints.resource(response, './static/cms.html', 'text/html', allow);
 
 				break;
@@ -183,8 +178,6 @@ const handleRequest = (request, response) => {
 			case '/static/band.txt':
 				request.on('data', (data) => {
 					data = decodeURI(data.toString('utf-8'));
-
-					console.log(data);
 
 					endpoints.post(response, './static/meta/band.txt', decodeURI(data.split('=')[1]));
 				});
@@ -206,6 +199,7 @@ const handleRequest = (request, response) => {
 
 function clearStamps() {
 	stamps = [];
+	allowed_hosts = [];
 }
 
 module.exports = { handleRequest, clearStamps};
