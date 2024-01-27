@@ -390,6 +390,4 @@ function decrypt(ciphers, key) {
     return decode_string(plain_text);
 }
 
-console.log(decrypt(encrypt("encryptdecryptasdfjqwhelrkajshdfklwehass", key), key));
-
 module.exports = {encrypt, decrypt, key, decode_string, encode_string};
