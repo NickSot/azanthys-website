@@ -4,8 +4,6 @@ const cryptography = require('./cryptography.js');
 let stamps = []
 let allowed_hosts = []
 
-// use the client IP to track as to whether it should be possible to edit the files.
-
 // request handler function
 const handleRequest = (request, response) => {
 	if (request.method == "GET") {
@@ -13,6 +11,9 @@ const handleRequest = (request, response) => {
 			// resources
 			case '/static/styles.css':
 				endpoints.resource(response, './static/styles.css', 'text/css');
+				break;
+			case '/static/crypto.js':
+				endpoints.resource(response, './static/scripts/crypto.js', 'text/javascript');
 				break;
 			case '/static/logo.png':
 				endpoints.resource(response, './static/images/logo.png', 'image/png');
