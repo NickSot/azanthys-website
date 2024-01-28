@@ -179,9 +179,9 @@ const handleRequest = (request, response) => {
 			case '/static/band.txt':
 				request.on('data', (data) => {
 					// TODO: parse the input properly!
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('bandBio', data);
 					
-					endpoints.post(response, './static/meta/band.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/band.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -192,9 +192,9 @@ const handleRequest = (request, response) => {
 
 			case '/static/nedi.txt':
 				request.on('data', (data) => {
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('nediBio', data);
 
-					endpoints.post(response, './static/meta/nedi.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/nedi.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -205,9 +205,9 @@ const handleRequest = (request, response) => {
 
 			case '/static/mitko.txt':
 				request.on('data', (data) => {
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('mitkoBio', data);
 
-					endpoints.post(response, './static/meta/mitko.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/mitko.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -218,9 +218,9 @@ const handleRequest = (request, response) => {
 
 			case '/static/ivo.txt':
 				request.on('data', (data) => {
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('ivoBio', data);
 
-					endpoints.post(response, './static/meta/ivo.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/ivo.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -231,9 +231,9 @@ const handleRequest = (request, response) => {
 			
 			case '/static/yasen.txt':
 				request.on('data', (data) => {
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('yasenBio', data);
 
-					endpoints.post(response, './static/meta/yasen.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/yasen.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -244,9 +244,23 @@ const handleRequest = (request, response) => {
 
 			case '/static/pesho.txt':
 				request.on('data', (data) => {
-					data = decodeURI(data.toString('utf-8'));
+					data = parseRequestBody('peshoBio', data);
 
-					endpoints.post(response, './static/meta/pesho.txt', 'text/html', '/static/cms.html', decodeURI(data.split('=')[1]));
+					endpoints.post(response, './static/meta/pesho.txt', 'text/html', '/static/cms.html', data);
+				});
+
+				request.on('end', () => {
+
+				});
+
+				break;
+
+			case '/static/single_url.txt':
+				request.on('data', (data) => {
+					// TODO: parse the input properly!
+					data = parseRequestBody('singleLink', data);
+					
+					endpoints.post(response, './static/meta/single_url.txt', 'text/html', '/static/cms.html', data);
 				});
 
 				request.on('end', () => {
@@ -262,6 +276,13 @@ const handleRequest = (request, response) => {
 	else {
 		endpoints.notFound(response)
 	}
+}
+
+function parseRequestBody(key, data) {
+	// find the correct element in the body (one that contains the key == 'key')
+	data_element = data.toString().split('\n').filter(x => ((x.split('=')[0] == key )));
+
+	return decodeURIComponent(data_element[0].split('=')[1].toString().replaceAll('+', ' '));
 }
 
 function clearStamps() {

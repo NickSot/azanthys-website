@@ -19,7 +19,7 @@
 					<div id="contentBioFormsOuterContainer">
 						<h1 class="text">Bios</h1>
 
-						<div id="contentFormsRow1" class	="contentFormsContainer">
+						<div id="contentFormsRow1" class = "contentFormInnerContainer">
 							<div id="band-bio" class="bio">
 								<form action="/static/band.txt" method="POST">
 									<h2 class="text">
@@ -75,7 +75,7 @@
 							</div>
 						</div>
 		
-						<div id="contentFormsRow2" class="contentFormsContainer">
+						<div id="contentFormsRow2" class="contentFormInnerContainer">
 							<div id="ivo-bio" class="bio">
 								<form action="/static/ivo.txt" method="POST">
 									<h2 class="text">
@@ -133,8 +133,25 @@
 					</div>
 				</div>
 
-				<div id="contentConcertsFormsContainer">
+				<div id="ceontentSingleFormContainer" class="contentFormInnerContainer">
+					<form action="/static/single_url.txt", method="POST">
+						<h1 class="text">Single</h1>
+						<label for="single-link" class="text">Link for the single</label>
+						<input type="text" id="single-link" name="singleLink">
+						
+						<br>
+						<br>
+						
+						<input type="submit">
+					</form>
+				</div>
+
+				<div id="contentConcertsFormsContainer" class="contentFormInnerContainer">
 					<h1 class="text">Concerts</h1>
+
+					<form action="/static/gig_dates.txt" >
+						<input type="submit" value="Submit">
+					</form>
 				</div>
 
 			</div>

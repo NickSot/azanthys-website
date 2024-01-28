@@ -154,3 +154,11 @@ a {
 	text-align: center;
 	justify-content: center;
 }
+
+.contentFormInnerContainer {
+	display: flex;
+	flex-direction: row;
+	padding: 1%;
+	text-align: center;
+	justify-content: center;
+}
