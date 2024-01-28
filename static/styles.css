@@ -137,16 +137,20 @@ a {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	justify-content: center;
 }
 
 #contentConcertsFormsContainer {
 	display: flex;
 	flex-direction: column;
 	text-align: center;
+	justify-content: center;
 }
 
 .contentFormsContainer {
 	display: flex;
 	flex-direction: row;
 	padding: 1%;
+	text-align: center;
+	justify-content: center;
 }
