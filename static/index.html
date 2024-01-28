@@ -73,7 +73,12 @@
 				xhttp.send();
 
 				xhttp.onload = function() {
-		    		concertList.innerHTML = this.responseText;
+					if (this.responseText == '') {
+						concertList.innerHTML = '<h3 class="text"> No concert dates available at this time! </h3>';
+					}
+					else {
+						concertList.innerHTML = this.responseText;	
+					}
 			    }
 			}
 
