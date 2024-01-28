@@ -179,78 +179,54 @@ const handleRequest = (request, response) => {
 			case '/static/band.txt':
 				request.on('data', (data) => {
 					// TODO: parse the input properly!
-					data = parseRequestBody('bandBio', data);
+					data = getRequestBodyElement('bandBio', data);
 					
 					endpoints.post(response, './static/meta/band.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
 
 			case '/static/nedi.txt':
 				request.on('data', (data) => {
-					data = parseRequestBody('nediBio', data);
+					data = getRequestBodyElement('nediBio', data);
 
 					endpoints.post(response, './static/meta/nedi.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
 
 			case '/static/mitko.txt':
 				request.on('data', (data) => {
-					data = parseRequestBody('mitkoBio', data);
+					data = getRequestBodyElement('mitkoBio', data);
 
 					endpoints.post(response, './static/meta/mitko.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
 
 			case '/static/ivo.txt':
 				request.on('data', (data) => {
-					data = parseRequestBody('ivoBio', data);
+					data = getRequestBodyElement('ivoBio', data);
 
 					endpoints.post(response, './static/meta/ivo.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
 			
 			case '/static/yasen.txt':
 				request.on('data', (data) => {
-					data = parseRequestBody('yasenBio', data);
+					data = getRequestBodyElement('yasenBio', data);
 
 					endpoints.post(response, './static/meta/yasen.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
 
 			case '/static/pesho.txt':
 				request.on('data', (data) => {
-					data = parseRequestBody('peshoBio', data);
+					data = getRequestBodyElement('peshoBio', data);
 
 					endpoints.post(response, './static/meta/pesho.txt', 'text/html', '/static/cms.html', data);
-				});
-
-				request.on('end', () => {
-
 				});
 
 				break;
@@ -258,14 +234,38 @@ const handleRequest = (request, response) => {
 			case '/static/single_url.txt':
 				request.on('data', (data) => {
 					// TODO: parse the input properly!
-					data = parseRequestBody('singleLink', data);
+					data = getRequestBodyElement('singleLink', data);
 					
 					endpoints.post(response, './static/meta/single_url.txt', 'text/html', '/static/cms.html', data);
 				});
 
-				request.on('end', () => {
+				break;
 
+			case '/static/gig_dates.txt':
+				let gigs = '';
+
+				request.on('data', (data) => {
+					let parsedData = parseRequestBody(data);
+					
+					console.log(parsedData);
+
+					for (let i = 1; ; i++) {
+						if (!parsedData[`date-${i}`]) {
+							break;
+						}
+
+						try{
+							gigs += `<li>\n${parsedData[`date-${i}`]} ${parsedData[`eventTitle-${i}`]} [<a href="${parsedData[`eventlink-${i}`]}">Event Link</a>]\n<\li>\n`;
+						}
+						catch(error) {
+							break;
+						}
+					}
 				});
+
+				request.on('end', () => {
+					endpoints.post(response, './static/meta/gig_dates.txt', 'text/html', '/static/cms.html', gigs, true);
+				})
 
 				break;
 
@@ -278,11 +278,26 @@ const handleRequest = (request, response) => {
 	}
 }
 
-function parseRequestBody(key, data) {
+function parseRequestBody(data) {
 	// find the correct element in the body (one that contains the key == 'key')
-	data_element = data.toString().split('\n').filter(x => ((x.split('=')[0] == key )));
+	// data_element = data.toString().split('\n').filter(x => ((x.split('=')[0] == key )));
 
-	return decodeURIComponent(data_element[0].split('=')[1].toString().replaceAll('+', ' '));
+	let result = {}
+
+	data.toString().split('\n').forEach(element => {
+		
+		let object = element.split('&');
+
+		object.forEach(element => {
+			result[element.split('=')[0]] = decodeURIComponent(element.split('=')[1].toString().replaceAll('+', ' '));
+		});
+	});
+
+	return result;
+}
+
+function getRequestBodyElement(key, element) {
+	return parseRequestBody(data)[key]
 }
 
 function clearStamps() {

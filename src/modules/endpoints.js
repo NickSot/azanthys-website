@@ -26,10 +26,17 @@ const resource = (response, resourcePath, contentType, securityCallback = true, 
 	});
 }
 
-const post = (response, resourcePath, contentType, responseContent, content) => {
-	fs.writeFile('./' + resourcePath, content, 'utf8', () => {
-		resource(response, responseContent, contentType, true, false);
-	});
+const post = (response, resourcePath, contentType, responseContent, content, append = false) => {
+	if (append) {
+		fs.appendFile('./' + resourcePath, content, 'utf8', () => {
+			resource(response, responseContent, contentType, true, false);
+		});
+	}
+	else {
+		fs.writeFile('./' + resourcePath, content, 'utf8', () => {
+			resource(response, responseContent, contentType, true, false);
+		});
+	}
 }
 
 const notFound = (response) => {

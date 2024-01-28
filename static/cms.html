@@ -149,9 +149,13 @@
 				<div id="contentConcertsFormsContainer" class="contentFormInnerContainer">
 					<h1 class="text">Concerts</h1>
 
-					<form action="/static/gig_dates.txt" >
+					<form id='gigDatesForm' action="/static/gig_dates.txt" method="POST">
+
 						<input type="submit" value="Submit">
 					</form>
+
+
+					<button id="addEvent">Add Event</button>
 				</div>
 
 			</div>
@@ -169,7 +173,33 @@
 		</div>
 
 		<script>
-			
+			const eventBtn = document.getElementById('addEvent');
+			const gigDatesForm = document.getElementById('gigDatesForm');
+			let eventCounter = 1;
+
+			eventBtn.addEventListener('click', () => {
+				let dateInput = document.createElement("input");
+				dateInput.setAttribute('type', 'text');
+				dateInput.setAttribute('id', `date-${eventCounter}`);
+				dateInput.setAttribute('name', `date-${eventCounter}`);
+
+				let eventTitle = document.createElement("input");
+				eventTitle.setAttribute('type', 'text');
+				eventTitle.setAttribute('id', `event-${eventCounter}`);
+				eventTitle.setAttribute('name', `eventTitle-${eventCounter}`);
+
+				let eventLink = document.createElement("input");
+				eventLink.setAttribute('type', 'text');
+				eventLink.setAttribute('id', `link-${eventCounter}`);
+				eventLink.setAttribute('name', `eventlink-${eventCounter}`);
+
+				gigDatesForm.appendChild(dateInput);
+				gigDatesForm.appendChild(eventTitle);
+				gigDatesForm.appendChild(eventLink);
+
+				eventCounter++;
+			});
+
 		</script>
 	</body>
 </html>
