@@ -255,7 +255,7 @@ const handleRequest = (request, response) => {
 						}
 
 						try{
-							gigs += `<li>\n${parsedData[`date-${i}`]} ${parsedData[`eventTitle-${i}`]} [<a href="${parsedData[`eventlink-${i}`]}">Event Link</a>]\n<\li>\n`;
+							gigs += `<li> ${parsedData[`date-${i}`]} ${parsedData[`eventTitle-${i}`]} [<a href="${parsedData[`eventlink-${i}`]}">Event Link</a>] </li>\n`;
 						}
 						catch(error) {
 							break;
