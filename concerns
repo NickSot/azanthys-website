@@ -7,7 +7,17 @@ security:
     - after 1 day, if the attacker contains information about the previous ciphers sent for authentication,
     they can just authorize as band personnel
 
+    - the block mode of the encryption algorithm is the least secure one
+        - feed the encrypted previous chunk of text to the current chunk before encryption
+
 front end:
     - the forms in the cms have to be aligned properly
     - the bio output has to have the '+' removed
     - multiple forms input will result in a disaster?
+
+
+
+security solutions:
+    - encrypt the headers of the request before the content is sent to the server
+    - decrypt at the server and validate
+        - what can happen is that someone can replicate the modification part, but cannot edit them
