@@ -296,7 +296,7 @@ function parseRequestBody(data) {
 	return result;
 }
 
-function getRequestBodyElement(key, element) {
+function getRequestBodyElement(key, data) {
 	return parseRequestBody(data)[key]
 }
 
