@@ -21,7 +21,8 @@
         
         <script>
             document.getElementById('btn-enter').addEventListener('click', () => {
-				let password = '202020_' + document.getElementById('password').value;
+				let datetimenow = new Date();
+                let password = `${datetimenow.getHours()}${datetimenow.getMinutes()}${datetimenow.getSeconds()}_${document.getElementById('password').value}`;
 
                 let key = document.getElementById('key-field').value.toString().split(' ').map((element) => {
                     return parseInt(element);
@@ -41,7 +42,6 @@
                 xhttp.onreadystatechange = function () {
                     if (xhttp.status == 200) {
                         let link = document.getElementById('link');
-                        console.log(this.responseText);
                         link.setAttribute('href', this.responseText);
                         link.click();
                     }
