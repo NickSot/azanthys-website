@@ -28,14 +28,9 @@
                     return parseInt(element);
                 });
 
-                console.log(password);
-                console.log(key);
-
                 const xhttp = new XMLHttpRequest();
 
                 let encr_pass = encrypt(password, key)
-
-                console.log(encrypt(password, key));
 
                 xhttp.open("GET", `/admin?password=${encr_pass}`, true);
 

@@ -246,8 +246,6 @@ const handleRequest = (request, response) => {
 
 				request.on('data', (data) => {
 					let parsedData = parseRequestBody(data);
-					
-					console.log(parsedData);
 
 					for (let i = 1; ; i++) {
 						if (!parsedData[`date-${i}`]) {
