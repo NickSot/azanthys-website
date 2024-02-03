@@ -26,6 +26,7 @@ const resource = (response, resourcePath, contentType, securityCallback = true, 
 	});
 }
 
+// post request handling
 const post = (response, resourcePath, contentType, responseContent, content, append = false) => {
 	if (append) {
 		fs.appendFile('./' + resourcePath, content, 'utf8', () => {

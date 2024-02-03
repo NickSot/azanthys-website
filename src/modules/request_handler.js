@@ -178,7 +178,6 @@ const handleRequest = (request, response) => {
 		switch (request.url) {
 			case '/static/band.txt':
 				request.on('data', (data) => {
-					// TODO: parse the input properly!
 					data = getRequestBodyElement('bandBio', data);
 					
 					endpoints.post(response, './static/meta/band.txt', 'text/html', '/static/cms.html', data);
@@ -233,7 +232,6 @@ const handleRequest = (request, response) => {
 
 			case '/static/single_url.txt':
 				request.on('data', (data) => {
-					// TODO: parse the input properly!
 					data = getRequestBodyElement('singleLink', data);
 					
 					endpoints.post(response, './static/meta/single_url.txt', 'text/html', '/static/cms.html', data);
