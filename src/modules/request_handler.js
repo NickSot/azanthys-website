@@ -2,7 +2,7 @@ const endpoints =  require('./endpoints.js');
 const cryptography = require('./cryptography.js');
 
 let stamps = []
-let allowed_hosts = []
+// let allowed_hosts = []
 
 // request handler function
 const handleRequest = (request, response) => {
@@ -70,7 +70,7 @@ const handleRequest = (request, response) => {
 			// pages
 			case '/':
 				endpoints.resource(response, './static/index.html', 'text/html');
-				break;			
+				break;
 			case '/about':
 				endpoints.resource(response, './static/about.html', 'text/html');
 				break;
@@ -153,18 +153,25 @@ const handleRequest = (request, response) => {
 					}
 
 					stamps.push(stamp);
-
-					allowed_hosts.push(request.headers['host']);
+					response.setHeader('Set-Cookie', 'allowed=true');
 
 					return true;
 				};
 
-				let allow = true;
+				let allowed = false;
+				console.log(request.headers);
 				
-				if (!allowed_hosts.includes(request.headers['host']))
-					allow = getPass();
-				
-				endpoints.resource(response, './static/cms.html', 'text/html', allow);
+				if (request.headers['cookie'])
+					console.log(parseCookies(request.headers['cookie']));
+
+				if (request.headers['cookie'] && parseCookies(request.headers['cookie'])['allowed'] == 'true') {
+					allowed = true;
+				}
+				else {
+					allowed = getPass();
+				}
+
+				endpoints.resource(response, './static/cms.html', 'text/html', allowed);
 
 				break;
 
@@ -174,7 +181,8 @@ const handleRequest = (request, response) => {
 	}
 
 	// ip spoofing??
-	else if (request.method == 'POST' && allowed_hosts.includes(request.headers['host'])) {
+	// else if (request.method == 'POST' && allowed_hosts.includes(request.headers['host'])) {
+	else if (request.method == 'POST' && (request.headers['cookies'] && parseCookies(request.headers['cookies'])['allowed'] == 'true')) {
 		switch (request.url) {
 			case '/static/band.txt':
 				request.on('data', (data) => {
@@ -292,13 +300,29 @@ function parseRequestBody(data) {
 	return result;
 }
 
+function parseCookies(cookies) {
+	let result = {};
+
+	cookies.replace(/\s/g, '').split(';').forEach(cookie => {
+		pair = cookie.split('=');
+		
+		if (pair.length != 2) {
+			return;
+		}
+
+		result[pair[0]] = pair[1];
+	});
+
+	return result;
+}
+
 function getRequestBodyElement(key, data) {
 	return parseRequestBody(data)[key]
 }
 
 function clearStamps() {
 	stamps = [];
-	allowed_hosts = [];
+	// allowed_hosts = [];
 }
 
 module.exports = { handleRequest, clearStamps};
