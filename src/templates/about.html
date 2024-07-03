@@ -2,13 +2,13 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/styles.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
 	</head>
 
 	<body>
 		<div id='body'>
 			<div id='header'>
-				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="/static/logo.png"></a>
+				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="{{ url_for('static',filename='images/logo.png') }}"></a>
 				<div><a href="/" class='urls'>Home</a></div>
 				<div><a href="/about" class='urls'>About</a></div>
 				<div><a href="/shop" class='urls'>Shop</a></div>
@@ -18,15 +18,15 @@
 				<div id='about-title' class='text'><h1>The Members of Azanthys</h1></div>
 				<!-- design the members page, such that it is interactive -->
 				<div id='member-images'>
-					<img src="/static/ivo.jpg" class='member-photo'>
-					<img src="/static/mitko.jpg" class='member-photo'>
-					<img src="/static/nedi.jpg" class='member-photo'>
-					<img src="/static/yasen.jpg" class='member-photo'>
-					<img src="/static/pesho.jpg" class='member-photo'>
+					<img src="{{ url_for('static',filename='images/ivo.jpg') }}" class='member-photo'>
+					<img src="{{ url_for('static',filename='images/mitko.jpg') }}" class='member-photo'>
+					<img src="{{ url_for('static',filename='images/nedi.jpg') }}" class='member-photo'>
+					<img src="{{ url_for('static',filename='images/yasen.jpg') }}" class='member-photo'>
+					<img src="{{ url_for('static',filename='images/pesho.jpg') }}" class='member-photo'>
 				</div>
 
 				<div id='band-bio' class='text'>
-					
+
 				</div>
 			</div>
 
@@ -46,7 +46,7 @@
 			function fadeIn() {
 
 				let i = 200;
-				
+
 				let interval = setInterval(() => {
 					if (i >= 250) {
 						clearInterval(interval);
@@ -54,13 +54,13 @@
 
 					images[0].style.height = `${i}px`;
 					images[0].style.width = `${i}px`;
-					
+
 					images[1].style.height = `${i}px`;
 					images[1].style.width = `${i}px`;
-					
+
 					images[2].style.height = `${i}px`;
 					images[2].style.width = `${i}px`;
-					
+
 					images[3].style.height = `${i}px`;
 					images[3].style.width = `${i}px`;
 
@@ -73,14 +73,17 @@
 			}
 
 			function loadBio(name) {
-				const xhttp = new XMLHttpRequest();
+				// const xhttp = new XMLHttpRequest();
 
-				xhttp.open("GET", `/static/${name}.txt`, true);
-				xhttp.send();
+				// xhttp.open("GET", `/static/${name}.txt`, true);
+				// xhttp.send();
 
-				xhttp.onload = function() {
-		    		bio.innerHTML = this.responseText;
-			    }
+				// xhttp.onload = function() {
+		    	// 	bio.innerHTML = this.responseText;
+			    // }
+
+				// TODO: change!
+				return "fake Bio";
 			}
 
 			let images = document.getElementsByClassName('member-photo');

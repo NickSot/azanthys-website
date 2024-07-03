@@ -1,0 +1,20 @@
+# Use the official Python image from the Docker Hub
+FROM python:3.12-bookworm
+
+WORKDIR /application
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libhdf5-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt /application/
+
+RUN pip install --no-cache-dir --upgrade  -r requirements.txt
+
+COPY . /application/
+
+EXPOSE 5000
+
+CMD flask --app /application/app run --host=0.0.0.0 --debug --with-threads

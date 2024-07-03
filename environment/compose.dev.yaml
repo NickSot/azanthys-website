@@ -1,0 +1,40 @@
+services:
+  web:
+    restart: always
+    build:
+      context: ../src/
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    ports:
+      - "${WEBSITE_PORT}:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    links:
+      - db
+    volumes:
+      - ../src:/app
+
+  db:
+    container_name: db
+    image: postgres:14-alpine
+    env_file:
+      - .env
+    volumes:
+      - .db:/data/postgres
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${DB_USER} -d ${DB_NAME}'"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "${DB_PORT}:5432"
+
+networks:
+  default:
+    name: azanthys-network

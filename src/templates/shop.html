@@ -2,13 +2,13 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/styles.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
 	</head>
 
 	<body>
 		<div id='body'>
 			<div id='header'>
-				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="/static/logo.png"></a>
+				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="{{ url_for('static',filename='images/logo.png') }}"></a>
 				<div><a href="/" class='urls'>Home</a></div>
 				<div><a href="/about" class='urls'>About</a></div>
 				<div><a href="/shop" class='urls'>Shop</a></div>
