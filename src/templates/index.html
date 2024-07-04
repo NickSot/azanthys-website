@@ -16,7 +16,7 @@
 
 			<div id='main'>
 				<div style='text-align: center;'>
-					<p id='single-advert' class='text' >Check out our latest single <b> >> Cybersecurity <<</b> !!!</p>
+					<p id='single-advert' class='text' ></p>
 					<iframe id='video-player' width="70%" height="300px" src="" allowfullscreen></iframe>
 				</div>
 
@@ -69,7 +69,7 @@
 				let concertList = document.getElementById('concert-advert-list');
 				const xhttp = new XMLHttpRequest();
 
-				xhttp.open("GET", `/static/gig_dates`, true);
+				xhttp.open("GET", `/gig_dates`, true);
 				xhttp.send();
 
 				xhttp.onload = function() {
@@ -84,13 +84,17 @@
 
 			function loadSingleUrl() {
 				let singleUrl = document.getElementById('video-player');
+				let singleTitle = document.getElementById('single-advert');
 				const xhttp = new XMLHttpRequest();
 
-				xhttp.open("GET", `/static/single_url`, true);
+				xhttp.open("GET", `/single_url`, true);
 				xhttp.send();
 
 				xhttp.onload = function() {
-		    		singleUrl.src = this.responseText;
+					let json = JSON.parse(this.responseText);
+
+		    		singleUrl.src = json.url;
+					singleTitle.innerHTML = `Check out our latest single <b> >> ${json.name} <<</b> !!!`;
 			    }
 			}
 

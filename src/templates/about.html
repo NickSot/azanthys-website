@@ -73,17 +73,14 @@
 			}
 
 			function loadBio(name) {
-				// const xhttp = new XMLHttpRequest();
+				const xhttp = new XMLHttpRequest();
 
-				// xhttp.open("GET", `/static/${name}.txt`, true);
-				// xhttp.send();
+				xhttp.open("GET", `/member_bio/${name}`, true);
+				xhttp.send();
 
-				// xhttp.onload = function() {
-		    	// 	bio.innerHTML = this.responseText;
-			    // }
-
-				// TODO: change!
-				return "fake Bio";
+				xhttp.onload = function() {
+		    		bio.innerHTML = this.responseText;
+			    }
 			}
 
 			let images = document.getElementsByClassName('member-photo');

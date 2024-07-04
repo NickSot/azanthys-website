@@ -2,13 +2,13 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/static/styles.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/styles.css') }}">
 	</head>
 
 	<body>
 		<div id='body'>
 			<div id='header'>
-				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="/static/logo.png"></a>
+				<a style='padding-right: 30%; position: sticky;' href="/"><img id='title' src="{{ url_for('static',filename='images/logo.png') }}"></a>
 				<div><a href="/" class='urls'>Home</a></div>
 				<div><a href="/about" class='urls'>About</a></div>
 				<div><a href="/shop" class='urls'>Shop</a></div>
@@ -21,110 +21,110 @@
 
 						<div id="contentFormsRow1" class = "contentFormInnerContainer">
 							<div id="band-bio" class="bio">
-								<form action="/static/band.txt" method="POST">
+								<form action="/admin/cms/bio/band" method="POST">
 									<h2 class="text">
 										Band Bio
 									</h2>
 
-									<textarea id="band-bio" name="bandBio"></textarea>
-			
+									<textarea id="band-bio" name="band-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
 							</div>
 
 							<div id="nedi-bio" class="bio">
-								<form action="/static/nedi.txt" method="POST">
+								<form action="/admin/cms/bio/nedi" method="POST">
 									<h2 class="text">
 										Nedi Bio
 									</h2>
 
-									<textarea id="band-bio" name="nediBio"></textarea>
-			
+									<textarea id="band-bio" name="nedi-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
 							</div>
-			
+
 							<div id="mitko-bio" class="bio">
-								<form action="/static/mitko.txt" method="POST">
+								<form action="/admin/cms/bio/mitko" method="POST">
 									<h2 class="text">
 										Mitko Bio
 									</h2>
 
-									<textarea id="band-bio" name="mitkoBio"></textarea>
-			
+									<textarea id="band-bio" name="mitko-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
 							</div>
 						</div>
-		
+
 						<div id="contentFormsRow2" class="contentFormInnerContainer">
 							<div id="ivo-bio" class="bio">
-								<form action="/static/ivo.txt" method="POST">
+								<form action="/admin/cms/bio/ivo" method="POST">
 									<h2 class="text">
 										Ivo Bio
 									</h2>
 
-									<textarea id="band-bio" name="ivoBio"></textarea>
-			
+									<textarea id="band-bio" name="ivo-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
 							</div>
-			
+
 							<div id="yasen-bio" class="bio">
-								<form action="/static/yasen.txt" method="POST">
+								<form action="/admin/cms/bio/yasen" method="POST">
 									<h2 class="text">
 										Yasen Bio
 									</h2>
 
-									<textarea id="band-bio" name="yasenBio"></textarea>
-			
+									<textarea id="band-bio" name="yasen-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
 							</div>
-			
+
 							<div id="pesho-bio" class="bio">
-								<form action="/static/pesho.txt" method="POST">
+								<form action="/admin/cms/bio/pesho" method="POST">
 									<h2 class="text">
 										Pesho Bio
 									</h2>
 
-									<textarea id="band-bio" name="peshoBio"></textarea>
-			
+									<textarea id="band-bio" name="pesho-bio"></textarea>
+
 									<br>
 									<br>
-									
+
 									<input type="submit" value="Submit" />
-									
+
 									<br>
 									<br>
 								</form>
@@ -134,14 +134,14 @@
 				</div>
 
 				<div id="ceontentSingleFormContainer" class="contentFormInnerContainer">
-					<form action="/static/single_url.txt", method="POST">
+					<form action="/admin/cms/single_url", method="POST">
 						<h1 class="text">Single</h1>
 						<label for="single-link" class="text">Link for the single</label>
-						<input type="text" id="single-link" name="singleLink">
-						
+						<input type="text" id="single-link" name="single-link">
+
 						<br>
 						<br>
-						
+
 						<input type="submit">
 					</form>
 				</div>
@@ -149,10 +149,9 @@
 				<div id="contentConcertsFormsContainer" class="contentFormInnerContainer">
 					<h1 class="text">Concerts</h1>
 
-					<form id='gigDatesForm' action="/static/gig_dates.txt" method="POST">
+					<form id='gigDatesForm' action="/admin/cms/gig_dates" method="POST">
 						<input type="submit" value="Submit">
 					</form>
-
 
 					<button id="addEvent">Add Event</button>
 				</div>

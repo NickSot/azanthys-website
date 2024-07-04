@@ -8,43 +8,13 @@
     <body>
         <a href="" id="link"></a>
         <div style="text-align: center;">
-            <label for="key-field">Key</label>
-            <input id='key-field' type="password">
-            <br>
-            <br>
-            <label for="password">Password</label>
-            <input id='password', type="password">
-            <br>
-            <br>
-            <button id="btn-enter">Enter</button>
+            <form action="" method="POST" >
+                <label for="password">Password</label>
+                <input id='password', type="password" name="password">
+                <br>
+                <br>
+                <input type="submit" id="btn-enter" value="Enter">
+            </form>
         </div>
-        
-        <script>
-            document.getElementById('btn-enter').addEventListener('click', () => {
-				let datetimenow = new Date();
-                let password = `${datetimenow.getHours()}${datetimenow.getMinutes()}${datetimenow.getSeconds()}_${document.getElementById('password').value}`;
-
-                let key = document.getElementById('key-field').value.toString().split(' ').map((element) => {
-                    return parseInt(element);
-                });
-
-                const xhttp = new XMLHttpRequest();
-
-                let encr_pass = encrypt(password, key)
-
-                xhttp.open("GET", `/admin?password=${encr_pass}`, true);
-
-                xhttp.onreadystatechange = function () {
-                    if (xhttp.status == 200) {
-                        let link = document.getElementById('link');
-                        link.setAttribute('href', this.responseText);
-                        link.click();
-                    }
-                };
-
-                xhttp.send();
-			});
-
-        </script>
     </body>
 </html>
