@@ -1,6 +1,7 @@
 """File, containing all the routes for the admin panel of the website"""
 import uuid
 from datetime import datetime, timedelta
+from functools import wraps
 
 from flask import request, make_response
 
@@ -15,13 +16,21 @@ from . import Blueprint, render_template
 admin = Blueprint('admin', __name__, url_prefix = '/admin')
 
 def validate_session():
-    """Check if the admin's session is in the cookie or if the cookie even exists"""
-    session_token = request.cookies.get('session_token')
+    """Decorator for session validation"""
+    def _validate_session(f):
+        @wraps(f)
+        def __validate_session(*args, **kwargs):
+            """Check if the admin's session is in the cookie or if the cookie even exists"""
+            session_token = request.cookies.get('session_token')
 
-    if not session_token or Session.query.filter_by(session_token = session_token).all() == []:
-        return False
+            if not session_token or \
+                Session.query.filter_by(session_token = session_token).all() == []:
+                return "Unauthorized!", 403
 
-    return True
+            return f(*args, **kwargs)
+
+        return __validate_session
+    return _validate_session
 
 @admin.route("/", methods=["GET"])
 def index():
@@ -57,19 +66,15 @@ def login():
     return response
 
 @admin.route("/cms", methods=["GET"])
+@validate_session()
 def get_cms():
     """Return the CMS page"""
-    if not validate_session():
-        return "Unauthorized!", 403
-
     return render_template('cms.html')
 
 @admin.route("/cms/bio/<member_name>", methods=["POST"])
+@validate_session()
 def update_bio(member_name):
     """Update bio when requested by admin"""
-    if not validate_session():
-        return "Unauthorized!", 403
-
     band_member = BandMember.query.filter_by(name = member_name).first()
 
     if not band_member:
