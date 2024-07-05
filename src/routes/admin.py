@@ -4,11 +4,13 @@ from datetime import datetime, timedelta
 from functools import wraps
 
 from flask import request, make_response
+from sqlalchemy.exc import IntegrityError
 
 from ..models import db
 from ..models.session import Session
 from ..models.band_member import BandMember
 from ..models.single import Single
+from ..models.gig import Gig
 
 from . import Blueprint, render_template
 
@@ -98,6 +100,10 @@ def update_bio(member_name):
 @validate_session()
 def update_single_link():
     """Updates the single link for the band"""
+
+    if len(request.data) > 1000:
+        return "Bad Request!", 400
+
     name = request.form.get('single-name')
     link = request.form.get('single-link')
 
@@ -108,5 +114,41 @@ def update_single_link():
 
     db.session.add(s)
     db.session.commit()
+
+    return "Success!", 200
+
+@admin.route('/cms/gig_dates', methods=["POST"])
+@validate_session()
+def update_gig_dates():
+    """Update the gig dates for every user generated form"""
+
+    if len([value for _, value in request.form.items()]) == 0:
+        return "Bad Request!", 400
+
+    sorted_request_form_data = dict(sorted(request.form.items()))
+
+    request_data = zip(
+        [value for key, value in sorted_request_form_data.items()
+        if 'eventtitle-' in key.lower()],
+        [value for key, value in sorted_request_form_data.items()
+        if 'eventlink-' in key.lower()],
+        [value for key, value in sorted_request_form_data.items()
+        if 'date-' in key.lower()]
+    )
+
+    gigs = []
+
+    for item in request_data:
+        print(item, flush=True)
+        gigs.append(Gig(location=item[0], link=item[1], time=item[2]))
+
+    try:
+        db.session.bulk_save_objects(gigs)
+        db.session.commit()
+
+    except IntegrityError:
+        db.session.rollback()
+
+        return "Bad Request!", 400
 
     return "Success!", 200

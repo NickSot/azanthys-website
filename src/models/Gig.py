@@ -7,5 +7,6 @@ class Gig(db.Model):
 
     id = db.Column(db.Integer(), autoincrement=True, primary_key=True, nullable=False)
 
-    location = db.Column(db.String())
+    link = db.Column(db.String(), unique=True)
+    location = db.Column(db.String(), unique=True)
     time = db.Column(db.DateTime())

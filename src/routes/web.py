@@ -33,7 +33,7 @@ def get_gig_dates():
 
     response_text = "<ul>" + "\n".join(
         [
-            f"<li> {g.location} {g.time} </li>" for g in db.session.query(Gig)
+            f"<li> <a>{g.link}</a> {g.location} {g.time} </li>" for g in db.session.query(Gig)
                 .filter(Gig.time > datetime.now()).all()
         ]
     ) + "</ul>"
