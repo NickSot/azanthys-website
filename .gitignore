@@ -2,4 +2,4 @@ concerns
 
 .env*
 ./src/routes/__pycache__
-./src/modfels/__pycache__
+./src/models/__pycache__
