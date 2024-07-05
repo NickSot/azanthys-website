@@ -8,10 +8,9 @@ from flask import request, make_response
 from ..models import db
 from ..models.session import Session
 from ..models.band_member import BandMember
+from ..models.single import Single
 
 from . import Blueprint, render_template
-
-# TODO: wrap cms functions in a security middleware
 
 admin = Blueprint('admin', __name__, url_prefix = '/admin')
 
@@ -91,6 +90,23 @@ def update_bio(member_name):
     band_member.bio = bio
 
     db.session.add(band_member)
+    db.session.commit()
+
+    return "Success!", 200
+
+@admin.route('/cms/single_url', methods=["POST"])
+@validate_session()
+def update_single_link():
+    """Updates the single link for the band"""
+    name = request.form.get('single-name')
+    link = request.form.get('single-link')
+
+    if not link:
+        return "Bad Request!", 400
+
+    s = Single(name=name, url=link)
+
+    db.session.add(s)
     db.session.commit()
 
     return "Success!", 200

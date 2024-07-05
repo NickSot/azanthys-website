@@ -136,6 +136,13 @@
 				<div id="ceontentSingleFormContainer" class="contentFormInnerContainer">
 					<form action="/admin/cms/single_url", method="POST">
 						<h1 class="text">Single</h1>
+
+						<label for="single-name" class="text">The new single name</label>
+						<input type="text" id="single-name" name="single-name">
+
+						<br>
+						<br>
+
 						<label for="single-link" class="text">Link for the single</label>
 						<input type="text" id="single-link" name="single-link">
 
@@ -171,6 +178,8 @@
 		</div>
 
 		<script>
+			// TODO: add AJAX requests, triggered by the button event handlers for updates
+
 			const eventBtn = document.getElementById('addEvent');
 			const gigDatesForm = document.getElementById('gigDatesForm');
 			let eventCounter = 1;

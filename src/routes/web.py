@@ -51,7 +51,7 @@ def get_single_url():
 
     return jsonify({ "url": single.url, "name": single.name})
 
-@web.route('/member_bio/<member_name>')
+@web.route('/member_bio/<member_name>', methods=["GET"])
 def get_member_bio(member_name):
     """Get band member bio"""
     if not member_name:
