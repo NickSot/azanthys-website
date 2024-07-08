@@ -81,12 +81,9 @@ def update_bio(member_name):
     if not band_member:
         return "Not Found!", 404
 
-    if len(request.data) > 1000:
-        return "Bad Request!", 400
-
     bio = request.form.get(f'{member_name}-bio')
 
-    if not bio:
+    if len(request.data) > 1000 or not bio:
         return "Bad Request!", 400
 
     band_member.bio = bio
@@ -107,7 +104,7 @@ def update_single_link():
     name = request.form.get('single-name')
     link = request.form.get('single-link')
 
-    if not link:
+    if not link or not name:
         return "Bad Request!", 400
 
     s = Single(name=name, url=link)
