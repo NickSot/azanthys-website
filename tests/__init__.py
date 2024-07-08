@@ -8,19 +8,22 @@ resources = Path(__file__).parent / "resources"
 
 @pytest.fixture()
 def app():
-    app = create_app()
-    app.config.update({
+    """Initialize the app and configure it as the test environment"""
+    web_app = create_app()
+    web_app.config.update({
         "TESTING": True,
     })
 
     # TODO: perform database deletion & populate with prefilled data
 
-    yield app
+    yield web_app
 
 @pytest.fixture()
 def client(app):
+    """Initialize the test client"""
     return app.test_client()
 
 @pytest.fixture()
 def runner(app):
+    """initialize the CLI runner"""
     return app.test_cli_runner()
