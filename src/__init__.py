@@ -12,8 +12,6 @@ from .models.single import Single
 from .models.band_member import BandMember
 from .models.session import Session
 
-# TODO: find a way to not cache the pages, but actually update them in dev
-
 SQL_USER = os.environ.get('DB_USER')
 SQL_PASSWORD = os.environ.get('DB_PASSWORD')
 SQL_PORT = os.environ.get('DB_PORT')

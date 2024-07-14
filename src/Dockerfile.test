@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /application/
+COPY ./requirements.txt /application/
 
 RUN pip install --no-cache-dir --upgrade  -r requirements.txt
 
@@ -16,4 +16,4 @@ COPY . /application/
 
 EXPOSE 5000
 
-CMD flask --app /application/app run --host=0.0.0.0 --with-threads
+CMD pytest tests/web_tests.py tests/admin_tests.py
